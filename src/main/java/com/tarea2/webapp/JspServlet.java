@@ -17,16 +17,16 @@ public class JspServlet extends HttpServlet {
 
     // LISTAR ESTUDIANTES (GET)
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         List<DatosEstudiante> listEstudiantes = dao.listar();
 
-        HttpSession session = request.getSession();
-        session.setAttribute("listEstudiantes", listEstudiantes);
+        // Usamos request en lugar de session para no saturar la memoria del servidor
+        request.setAttribute("listEstudiantes", listEstudiantes);
 
-        response.sendRedirect("MostrarEstudiantes.jsp");
+        // Hacemos un forward directo a la vista
+        request.getRequestDispatcher("MostrarEstudiantes.jsp").forward(request, response);
     }
 
     // GUARDAR ESTUDIANTE (POST)
